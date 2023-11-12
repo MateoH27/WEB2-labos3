@@ -55,7 +55,7 @@
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0;
                 this.interval = setInterval(updateGameArea, 10);
-                this.interval1 = setInterval(checkColision, 10);
+                this.interval1 = setInterval(checkColision, 1);
             },
             stop : function() {
                 clearInterval(this.interval);
@@ -217,11 +217,14 @@
             clearInterval(spawning)
 
             //pospremiti rezultat u localStorage
-            var milliseconds = newTime % 1000;
-            var seconds = Math.floor(newTime / 1000) % 60;
-            var minutes = Math.floor(newTime / 1000 / 60) % 60;
-            var displayTime = pad(minutes) + ":" + pad(seconds) + "." + milliseconds;
-            localStorage.setItem('bestTime', displayTime)
+            if (!localStorage.bestTime) {
+                localStorage.setItem('bestTime', newTime)
+            } else {
+                var oldTime = localStorage.getItem('bestTime')
+                if (newTime > oldTime) {
+                    localStorage.setItem('bestTime', newTime)
+                }
+            }
             document.getElementById("lose").innerHTML = "Game over!"
             document.getElementById("restart").style.visibility = "visible"
         }
@@ -236,7 +239,12 @@
             startStopwatch();
 
             if (localStorage.bestTime) {
-                document.getElementById("bestTime").innerHTML = localStorage.getItem("bestTime")
+                var time = localStorage.getItem('bestTime')
+                var milliseconds = time % 1000;
+                var seconds = Math.floor(time / 1000) % 60;
+                var minutes = Math.floor(time / 1000 / 60) % 60;
+                var displayTime = pad(minutes) + ":" + pad(seconds) + "." + milliseconds;
+                document.getElementById("bestTime").innerHTML = displayTime
             } else {
                 document.getElementById("bestTime").innerHTML = "00:00.000"
             }

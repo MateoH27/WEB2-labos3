@@ -116,22 +116,22 @@
             this.action = function() {
                 if (UP) {
                     if (this.y >= 0) {
-                        this.y -= 4
+                        this.y -= 3.5
                     }
                 }
                 if (DOWN) {
                     if (this.y <= myGameArea.context.canvas.height - this.height) {
-                        this.y += 4;
+                        this.y += 3.5;
                     }
                 }
                 if (LEFT) {
                     if (this.x >= 0) {
-                        this.x -= 4
+                        this.x -= 3.5
                     } 
                 }
                 if (RIGHT) {
                     if (this.x <= myGameArea.context.canvas.width - this.width) {
-                        this.x += 4
+                        this.x += 3.5
                     }
                 }
             }
@@ -184,11 +184,19 @@
                 ur = [allObjects[i].x + allObjects[i].width, allObjects[i].y]
                 bl = [allObjects[i].x, allObjects[i].y + allObjects[i].height]
                 br = [allObjects[i].x + allObjects[i].width, allObjects[i].y + allObjects[i].height]
+                ul_ur = [allObjects[i].x + allObjects[i].width / 2, allObjects[i].y]
+                ur_br = [allObjects[i].x + allObjects[i].width, allObjects[i].y + allObjects[i].height / 2]
+                bl_br = [allObjects[i].x + allObjects[i].width / 2, allObjects[i].y + allObjects[i].height]
+                bl_ul = [allObjects[i].x, allObjects[i].y + allObjects[i].height / 2]
                 allDots = [ul, ur, bl, br]
                 if (ul[0] > player.x && ul[0] <= player.x + player.width && ul[1] > player.y && ul[1] <= player.y + player.height ||
                     ur[0] > player.x && ur[0] <= player.x + player.width && ur[1] > player.y && ur[1] <= player.y + player.height ||
                     bl[0] > player.x && bl[0] <= player.x + player.width && bl[1] > player.y && bl[1] <= player.y + player.height ||
-                    br[0] > player.x && br[0] <= player.x + player.width && br[1] > player.y && br[1] <= player.y + player.height) {
+                    br[0] > player.x && br[0] <= player.x + player.width && br[1] > player.y && br[1] <= player.y + player.height ||
+                    ul_ur[0] > player.x && ul_ur[0] <= player.x + player.width && ul_ur[1] > player.y && ul_ur[1] <= player.y + player.height ||
+                    ur_br[0] > player.x && ur_br[0] <= player.x + player.width && ur_br[1] > player.y && ur_br[1] <= player.y + player.height ||
+                    bl_br[0] > player.x && bl_br[0] <= player.x + player.width && bl_br[1] > player.y && bl_br[1] <= player.y + player.height ||
+                    bl_ul[0] > player.x && bl_ul[0] <= player.x + player.width && bl_ul[1] > player.y && bl_ul[1] <= player.y + player.height) {
                         endStopwatch();
                 }
             }
@@ -259,9 +267,9 @@
             spawning = setInterval(function() {
                 corners = [0, 0, 0, 0]
                 for(let i = 0; i < 4; ++i) {
-                    corners[i] = Math.floor(Math.random() * 10) + 1;
+                    corners[i] = Math.floor(Math.random() * 2) + 1;
                 }
-                for (let i = 0; i < corners[0]; ++i) {
+                for (let i = 0; i < corners[0]; ++i) { 
                     width = Math.floor(Math.random() * 60) + 20;
                     height = Math.floor(Math.random() * 60) + 20;
                     starting_x = -1 * Math.floor(Math.random() * 500);
@@ -276,7 +284,7 @@
                     starting_x = -1 * Math.floor(Math.random() * 500);
                     starting_y = Math.floor(Math.random() * 500) + window.innerHeight;
                     speed_x = Math.floor(Math.random() * 3) + 1;
-                    speed_y = -1 * Math.floor(Math.random() * 3) + 1;
+                    speed_y = -1 * (Math.floor(Math.random() * 3) + 1);
                     allObjects.push(new component(width, height, "grey", starting_x, starting_y, speed_x, speed_y)) // width, height, color, x, y, speed_x, speed_y
                 }
                 for (let i = 0; i < corners[2]; ++i) {
@@ -284,7 +292,7 @@
                     height = Math.floor(Math.random() * 60) + 20;
                     starting_x = Math.floor(Math.random() * 500) + window.innerWidth;
                     starting_y = -1 * Math.floor(Math.random() * 500);
-                    speed_x = -1 * Math.floor(Math.random() * 3) + 1;
+                    speed_x = -1 * (Math.floor(Math.random() * 3) + 1);
                     speed_y = Math.floor(Math.random() * 3) + 1;
                     allObjects.push(new component(width, height, "grey", starting_x, starting_y, speed_x, speed_y)) // width, height, color, x, y, speed_x, speed_y
                 }
@@ -293,11 +301,11 @@
                     height = Math.floor(Math.random() * 60) + 20;
                     starting_x = Math.floor(Math.random() * 500) + window.innerWidth;
                     starting_y = Math.floor(Math.random() * 500) + window.innerHeight;
-                    speed_x = -1 * Math.floor(Math.random() * 3) + 1;
-                    speed_y = -1 * Math.floor(Math.random() * 3) + 1;
+                    speed_x = -1 * (Math.floor(Math.random() * 3) + 1);
+                    speed_y = -1 * (Math.floor(Math.random() * 3) + 1);
                     allObjects.push(new component(width, height, "grey", starting_x, starting_y, speed_x, speed_y)) // width, height, color, x, y, speed_x, speed_y
                 }
-            }, 1000)
+            }, 800)
         }
         function restart() {
             location.reload()
